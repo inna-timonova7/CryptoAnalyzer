@@ -2,9 +2,8 @@ package ru.javarush.timonova.cryptoanalyzer.Entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import ru.javarush.timonova.cryptoanalyzer.constants.ResultCode;
 import ru.javarush.timonova.cryptoanalyzer.exceptions.ExceptionsInApplication;
-import ru.javarush.timonova.cryptoanalyzer.repository.ResultCode;
 
 @Data
 @AllArgsConstructor
