@@ -3,7 +3,7 @@ package ru.javarush.timonova.cryptoanalyzer.controller;
 import ru.javarush.timonova.cryptoanalyzer.constants.ResultPath;
 import ru.javarush.timonova.cryptoanalyzer.guiView.GUIView;
 
-import java.util.*;
+import java.util.Random;
 
 public class Operation {
 
@@ -20,27 +20,28 @@ public class Operation {
     public void performOperation() {
 
         if (GUIView.ENCRYPT.isSelected()) {
-            coder.performEncryption(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + getRandomFilenameEncryption(), GUIView.getKey());
+            coder.performEncryption(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + setRandomFilenameEncryption(), GUIView.getKey());
 
         } else if (GUIView.DECRYPT.isSelected()) {
-            coder.performDecryption(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + getRandomFilenameDecryption(), GUIView.getKey());
+            coder.performDecryption(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + setRandomFilenameDecryption(), GUIView.getKey());
 
         } else if (GUIView.BRUTE_FORCE.isSelected()) {
-            coder.performBruteForcing(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + getRandomFilenameBruteForce());
+            coder.performBruteForcing(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + setRandomFilenameBruteForce());
+
         } else if (GUIView.EXIT.isSelected()) {
             System.out.println("Buy! Hope to see you soon.");
         }
     }
 
-    private String getRandomFilenameEncryption() {
+    private String setRandomFilenameEncryption() {
         return "encryptedFile" + new Random().nextInt(3) + " .txt";
     }
 
-    private String getRandomFilenameDecryption() {
+    private String setRandomFilenameDecryption() {
         return "decryptedFile" + new Random().nextInt(3) + " .txt";
     }
 
-    private String getRandomFilenameBruteForce() {
+    private String setRandomFilenameBruteForce() {
         return "bruteForcedFile" + new Random().nextInt(3) + " .txt";
     }
 }

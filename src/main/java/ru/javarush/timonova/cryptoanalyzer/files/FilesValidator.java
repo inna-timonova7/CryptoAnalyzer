@@ -5,7 +5,7 @@ import ru.javarush.timonova.cryptoanalyzer.exceptions.ExceptionInFileProcessing;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.List;
 
 public class FilesValidator {
 

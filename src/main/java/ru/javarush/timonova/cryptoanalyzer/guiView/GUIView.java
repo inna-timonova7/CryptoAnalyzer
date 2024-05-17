@@ -2,11 +2,23 @@ package ru.javarush.timonova.cryptoanalyzer.guiView;
 
 import ru.javarush.timonova.cryptoanalyzer.controller.Operation;
 
-import javax.swing.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.WindowConstants;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.File;
 
 public class GUIView extends JFrame implements ActionListener {
@@ -31,8 +43,7 @@ public class GUIView extends JFrame implements ActionListener {
         this.setTitle("Project Caesar Cypher");
         this.setBounds(300, 300, 600, 400);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(6, 3, 10, 10));
+        this.setLayout(new GridLayout(6, 3, 10, 10));
 
         buttonToUpload = new JButton("Upload a txt. File from Your PC");
         buttonToUpload.setFocusable(false);
@@ -54,18 +65,17 @@ public class GUIView extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent event) {
                 if (event.getSource() == EXECUTE) {
-                    int x = 0;
-                    try {
-                        x = Integer.parseInt(KEY_INPUT.getText());
-                    } catch (NumberFormatException e1) {
-                        JOptionPane.showMessageDialog(panel, "Некорректный ввод! Можно ввести только число");
+                    if (GUIView.ENCRYPT.isSelected() || GUIView.DECRYPT.isSelected()) {
+                        KEY_INPUT.setAction(KEY_INPUT.getAction());
+                    } if (GUIView.BRUTE_FORCE.isSelected()) {
+                        GUIView.KEY_INPUT.disable();
                     }
-                    Operation operation = new Operation();
-                    operation.performOperation();
-
-                    JOptionPane.showMessageDialog(panel, "Success! Find the result on your Desktop");
+                        Operation operation = new Operation();
+                        operation.performOperation();
+                        JOptionPane.showMessageDialog(null, "Success! Find the result on your Desktop", "Congrats!", JOptionPane.INFORMATION_MESSAGE);
+                        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+                    }
                 }
-            }
         });
 
         EXIT.addActionListener(new ActionListener() {
@@ -75,25 +85,45 @@ public class GUIView extends JFrame implements ActionListener {
             }
         });
 
-        panel.add(BUTTON_MESSAGE);
-        panel.add(buttonToUpload);
-        panel.add(ACTION_MESSAGE);
+        KEY_INPUT.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                char ch = e.getKeyChar();
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                char ch = e.getKeyChar();
+                if(Character.isDigit(ch)){
+                }
+                else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    KEY_INPUT.setText(" ");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Only numbers are allowed!");
+                    KEY_INPUT.setText(" ");
+                }
+            }
+        });
+
+        this.add(BUTTON_MESSAGE);
+        this.add(buttonToUpload);
+        this.add(ACTION_MESSAGE);
 
         ButtonGroup buttonGroup = new ButtonGroup();
         buttonGroup.add(ENCRYPT);
         buttonGroup.add(DECRYPT);
         buttonGroup.add(BRUTE_FORCE);
 
-        panel.add(ENCRYPT);
-        panel.add(DECRYPT);
-        panel.add(BRUTE_FORCE);
-        panel.add(KEY_MESSAGE);
-        panel.add(KEY_INPUT);
-        panel.add(EXECUTE, BorderLayout.WEST);
-        panel.add(RESULT, BorderLayout.EAST);
-        panel.add(EXIT, BorderLayout.EAST);
+        this.add(ENCRYPT);
+        this.add(DECRYPT);
+        this.add(BRUTE_FORCE);
+        this.add(KEY_MESSAGE);
+        this.add(KEY_INPUT);
+        this.add(EXECUTE, BorderLayout.WEST);
+        this.add(RESULT, BorderLayout.EAST);
+        this.add(EXIT, BorderLayout.EAST);
 
-        this.add(panel).setForeground(Color.GRAY);
+        this.setForeground(Color.GRAY);
         this.setVisible(true);
     }
 
@@ -102,7 +132,7 @@ public class GUIView extends JFrame implements ActionListener {
     }
 
     public static int getKey() {
-        return Integer.parseInt(KEY_INPUT.getText());
+        return KEY_INPUT.getY();
     }
 
     @Override

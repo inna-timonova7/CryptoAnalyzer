@@ -3,7 +3,7 @@ package ru.javarush.timonova.cryptoanalyzer.services;
 import ru.javarush.timonova.cryptoanalyzer.constants.CypherAlphabet;
 import ru.javarush.timonova.cryptoanalyzer.exceptions.ExceptionsInApplication;
 
-public class Decode {
+public class Decrypt {
     public static String decrypt(String textForDecryption, int key) {
         try {
             StringBuilder decryptedText = new StringBuilder();
@@ -13,8 +13,8 @@ public class Decode {
             for (char symbol : textForDecryption.toCharArray()) {
                 int index = indexOf(symbol);
                 if (index != -1) {
-                    int indexToShift = (index - key + CypherAlphabet.CYPHER_ALPHABET.length) % CypherAlphabet.CYPHER_ALPHABET.length;
-                    decryptedText.append(CypherAlphabet.CYPHER_ALPHABET[indexToShift]);
+                    int indexToShift = (index - key + CypherAlphabet.ALPHABET.size()) % CypherAlphabet.ALPHABET.size();
+                    decryptedText.append(CypherAlphabet.ALPHABET.get(indexToShift));
                 } else {
                     decryptedText.append(symbol);
                 }
@@ -26,8 +26,8 @@ public class Decode {
     }
 
     private static int indexOf(char symbol) {
-        for (int i = 0; i < CypherAlphabet.CYPHER_ALPHABET.length; i++) {
-            if (CypherAlphabet.CYPHER_ALPHABET[i] == symbol) {
+        for (int i = 0; i < CypherAlphabet.ALPHABET.size(); i++) {
+            if (CypherAlphabet.ALPHABET.get(i) == symbol) {
                 return i;
             }
         }

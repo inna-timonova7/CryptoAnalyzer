@@ -3,7 +3,7 @@ package ru.javarush.timonova.cryptoanalyzer.services;
 import ru.javarush.timonova.cryptoanalyzer.constants.CypherAlphabet;
 import ru.javarush.timonova.cryptoanalyzer.exceptions.ExceptionsInApplication;
 
-public class Encode {
+public class Encrypt {
 
     public static String encrypt(String textForEncryption, int key) {
         try {
@@ -12,8 +12,8 @@ public class Encode {
             for (char symbol : textForEncryption.toCharArray()) {
                 int index = indexOf(symbol);
                 if (index != -1) {
-                    int indexToShift = (index + key) % CypherAlphabet.CYPHER_ALPHABET.length;
-                    encryptedText.append(CypherAlphabet.CYPHER_ALPHABET[indexToShift]);
+                    int indexToShift = (index + key) % CypherAlphabet.ALPHABET.size();
+                    encryptedText.append(CypherAlphabet.ALPHABET.get(indexToShift));
                 } else {
                     encryptedText.append(symbol);
                 }
@@ -25,8 +25,8 @@ public class Encode {
     }
 
     private static int indexOf(char symbol) {
-        for (int i = 0; i < CypherAlphabet.CYPHER_ALPHABET.length; i++) {
-            if (CypherAlphabet.CYPHER_ALPHABET[i] == symbol) {
+        for (int i = 0; i < CypherAlphabet.ALPHABET.size(); i++) {
+            if (CypherAlphabet.ALPHABET.get(i) == symbol) {
                 return i;
             }
         }

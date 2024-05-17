@@ -1,39 +1,52 @@
 package ru.javarush.timonova.cryptoanalyzer.services;
-
 import ru.javarush.timonova.cryptoanalyzer.constants.CypherAlphabet;
-import ru.javarush.timonova.cryptoanalyzer.exceptions.ExceptionsInApplication;
 
-import java.util.*;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 public class BruteForce {
-    public static String bruteForce(String textForDecryption) {
-        List<char[]> alphabetList = List.of(CypherAlphabet.CYPHER_ALPHABET);
-        String[] plainText = new String[CypherAlphabet.CYPHER_ALPHABET.length];
-        try {
-            char[] message = textForDecryption.toLowerCase().toCharArray();
-            for (int key = 1; key < CypherAlphabet.CYPHER_ALPHABET.length; key++) {
-                char[] decodedText = new char[message.length];
-                for (int i = 0; i < message.length; i++) {
-                    if (message[i] != ' ') {
-                        decodedText[i] = CypherAlphabet.CYPHER_ALPHABET[(alphabetList.indexOf(message[i]) + key) % CypherAlphabet.CYPHER_ALPHABET.length];
-                    } else {
-                        decodedText[i] = ' ';
+
+    private final static Set<String> TEST_WORDS = Set.of("доказать", "договор", "любовь", "радость");
+    private BruteForce() {
+    }
+        public static String bruteForce(String textForDecryption) {
+            int spaceIndex = CypherAlphabet.ALPHABET.indexOf(' ');
+            int shift;
+            for (Character c : CypherAlphabet.ALPHABET) {
+                int charIndex = CypherAlphabet.ALPHABET.indexOf(c);
+                shift = shiftCalculation(spaceIndex, charIndex);
+
+                String[] words = textForDecryption.split(Pattern.quote(String.valueOf(c)));
+                for (String word : words) {
+                    if (TEST_WORDS.contains(shiftWord(word, shift))) {
+                        return shiftWord(textForDecryption, shift);
                     }
                 }
-                plainText[key] = String.valueOf(decodedText);
             }
-        } catch (Exception e) {
-            throw new ExceptionsInApplication("Brute Force process finished with exception", e);
+            throw new RuntimeException("Brute Force failed");
         }
-        return Arrays.toString(plainText);
+
+    private static String shiftWord(String word, int shift) {
+        String result = "";
+
+        char[] chars = word.toCharArray();
+        for (char c : chars) {
+            if(c == '\n') {
+                result += c;
+                continue;
+            }
+            int index = shiftCalculation(shift, CypherAlphabet.ALPHABET.indexOf(c));
+            result = result + CypherAlphabet.ALPHABET.get(index);
+        }
+        return result;
     }
 
-    private static int indexOf(char symbol) {
-        for (int i = 0; i < CypherAlphabet.CYPHER_ALPHABET.length; i++) {
-            if (CypherAlphabet.CYPHER_ALPHABET[i] == symbol) {
-                return i;
-            }
+    private static int shiftCalculation(int current, int required) {
+        if (required >= current) {
+            return required - current;
+        } else {
+            return CypherAlphabet.ALPHABET.size() - current + required;
         }
-        return -1;
     }
 }
+

@@ -1,12 +1,14 @@
 package ru.javarush.timonova.cryptoanalyzer.controller;
 
+import lombok.SneakyThrows;
 import ru.javarush.timonova.cryptoanalyzer.files.FileProcessor;
 import ru.javarush.timonova.cryptoanalyzer.services.BruteForce;
-import ru.javarush.timonova.cryptoanalyzer.services.Decode;
-import ru.javarush.timonova.cryptoanalyzer.services.Encode;
+import ru.javarush.timonova.cryptoanalyzer.services.Decrypt;
+import ru.javarush.timonova.cryptoanalyzer.services.Encrypt;
 import ru.javarush.timonova.cryptoanalyzer.files.FilesValidator;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 public class CaesarCypherCoder {
     private FilesValidator filesValidator;
@@ -21,10 +23,10 @@ public class CaesarCypherCoder {
         filesValidator.validateReadingFile(inputFile);
         filesValidator.validateForWriting(outputFile);
 
-        List<String> sourceLines = Collections.singletonList(fileProcessor.readFile(inputFile));
+        List<String> sourceLines = Collections.singletonList(FileProcessor.readFile(inputFile));
         for (String str : sourceLines) {
-            String encryptedLine = Encode.encrypt(str, key);
-            fileProcessor.writeToFile(outputFile, encryptedLine);
+            String encryptedLine = Encrypt.encrypt(str, key);
+            FileProcessor.writeToFile(outputFile, encryptedLine);
         }
     }
 
@@ -32,21 +34,24 @@ public class CaesarCypherCoder {
         filesValidator.validateReadingFile(inputFile);
         filesValidator.validateForWriting(outputFile);
 
-        List<String> sourceLines = Collections.singletonList(fileProcessor.readFile(inputFile));
+        List<String> sourceLines = Collections.singletonList(FileProcessor.readFile(inputFile));
         for (String str : sourceLines) {
-            String decryptedLine = Decode.decrypt(str, key);
-            fileProcessor.writeToFile(outputFile, decryptedLine);
+            String decryptedLine = Decrypt.decrypt(str, key);
+            FileProcessor.writeToFile(outputFile, decryptedLine);
         }
     }
 
+    @SneakyThrows
     public void performBruteForcing(String inputFile, String outputFile) {
         filesValidator.validateReadingFile(inputFile);
         filesValidator.validateForWriting(outputFile);
 
-        List<String> sourceLines = Collections.singletonList(fileProcessor.readFile(inputFile));
-        for (String str : sourceLines) {
-            String bruteForcedText = BruteForce.bruteForce(str);
-            fileProcessor.writeToFile(outputFile, bruteForcedText);
+        List<String> sourceLines = Collections.singletonList(FileProcessor.readFile(inputFile));
+        StringBuilder builder = new StringBuilder();
+        for (String sourceLine : sourceLines) {
+            builder.append(sourceLine).append("\n");
         }
+        String bruteForcedText = BruteForce.bruteForce(builder.toString());
+        FileProcessor.writeToFile(outputFile, bruteForcedText);
     }
 }
