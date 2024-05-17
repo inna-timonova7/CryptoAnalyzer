@@ -132,7 +132,7 @@ public class GUIView extends JFrame implements ActionListener {
     }
 
     public static int getKey() {
-        return KEY_INPUT.getY();
+        return Integer.parseInt(KEY_INPUT.getText());
     }
 
     @Override
