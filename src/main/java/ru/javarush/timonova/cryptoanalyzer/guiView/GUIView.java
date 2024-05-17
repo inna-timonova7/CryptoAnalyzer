@@ -131,7 +131,11 @@ public class GUIView extends JFrame implements ActionListener {
         return String.valueOf(new File(String.valueOf(fileChooser.getSelectedFile().getAbsoluteFile())));
     }
 
-    public static int getKey() {
+    public static int getKeyEn() {
+        return KEY_INPUT.getY();
+    }
+
+    public static int getKeyDe() {
         return Integer.parseInt(KEY_INPUT.getText());
     }
 

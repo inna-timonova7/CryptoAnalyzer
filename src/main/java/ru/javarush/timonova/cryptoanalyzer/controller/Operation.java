@@ -20,10 +20,10 @@ public class Operation {
     public void performOperation() {
 
         if (GUIView.ENCRYPT.isSelected()) {
-            coder.performEncryption(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + setRandomFilenameEncryption(), GUIView.getKey());
+            coder.performEncryption(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + setRandomFilenameEncryption(), GUIView.getKeyEn());
 
         } else if (GUIView.DECRYPT.isSelected()) {
-            coder.performDecryption(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + setRandomFilenameDecryption(), GUIView.getKey());
+            coder.performDecryption(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + setRandomFilenameDecryption(), GUIView.getKeyDe());
 
         } else if (GUIView.BRUTE_FORCE.isSelected()) {
             coder.performBruteForcing(GUIView.getFileSource(), ResultPath.RESULT_FOLDER + setRandomFilenameBruteForce());
